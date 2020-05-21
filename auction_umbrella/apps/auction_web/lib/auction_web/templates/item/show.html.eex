@@ -3,7 +3,20 @@
     <li><strong>Description: </strong><%= @item.description %></li>
     <li><strong>Auction ends at: </strong><%= @item.ends_at %></li>
 </ul>
+<div style="display: flex; flex-direction: row;">
+<div style="flex: 1;">
+    <h2>Current bids</h2>
+    <%= for bid <- @item.bids do %>
+       <p>
+            <%= integer_to_currency(bid.amount) %>
+            <em> from </em>
+            <%= bid.user.username %>
+       </p>
+    <% end %>
+</div>
 
+
+<div style="flex: 1;">
 <%= if @current_user do %>
    <h2>Place your bid!</h2>
 
@@ -22,3 +35,5 @@
         <%= submit "Submit", class: "btn btn-primary" %>
    <% end %>
 <% end %>
+</div>
+</div>
