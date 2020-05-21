@@ -4,27 +4,23 @@
     <li><strong>Auction ends at: </strong><%= @item.ends_at %></li>
 </ul>
 <div style="display: flex; flex-direction: row;">
-<div style="flex: 1;">
-    <h2>Current bids</h2>
-    <%= for bid <- @item.bids do %>
-       <p>
-            <%= integer_to_currency(bid.amount) %>
-            <em> from </em>
-            <%= bid.user.username %>
-       </p>
-    <% end %>
-</div>
+    <div style="flex: 1;">
+        <h2>Current bids</h2>
+        <div id="bids">
+            <%= render_many @item.bids, AuctionWeb.BidView, "bid.html" %>
+        </div>
+    </div>
 
 
-<div style="flex: 1;">
-<%= if @current_user do %>
-   <h2>Place your bid!</h2>
+    <div style="flex: 1;">
+        <%= if @current_user do %>
+        <h2>Place your bid!</h2>
 
-<%= form_for @bid, Routes.item_bid_path(@conn, :create, @item.id), fn f -> %>
+        <%= form_for @bid, Routes.item_bid_path(@conn, :create, @item.id), fn f -> %>
         <%= if @bid.action do  %>
-            <div class="alert alert-danger">
-                Unfortunately, there are errors in your submission. Please correct them below
-            </div>
+        <div class="alert alert-danger">
+            Unfortunately, there are errors in your submission. Please correct them below
+        </div>
         <% end %>
 
         <div class="form-group">
@@ -33,7 +29,7 @@
             <%= number_input f, :amount, class: "form-control" %>
         </div>
         <%= submit "Submit", class: "btn btn-primary" %>
-   <% end %>
-<% end %>
-</div>
+        <% end %>
+        <% end %>
+    </div>
 </div>
